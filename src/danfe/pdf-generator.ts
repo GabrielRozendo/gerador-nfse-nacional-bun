@@ -30,14 +30,16 @@ export async function generatePdfFromHtml(html: string, options: PdfOptions = {}
     throw new Error('puppeteer não encontrado. Instale-o para gerar PDF: npm install puppeteer')
   })
 
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || undefined
   const browser = await puppeteer.launch({
     headless: true,
+    executablePath,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
   })
 
   try {
     const page = await browser.newPage()
-    await page.setContent(html, { waitUntil: 'networkidle0' })
+    await page.setContent(html, { waitUntil: 'load' })
 
     const pdf = await page.pdf({
       format: opts.format,

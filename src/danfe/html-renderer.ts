@@ -75,7 +75,7 @@ function loadMunicipios(): Map<string, { nome: string; uf: string }> {
   if (municipioCache) return municipioCache
   municipioCache = new Map()
   try {
-    const lines = readFileSync(MUNICIPIOS_CSV, 'utf-8').split('\n').slice(1)
+    const lines = readFileSync(/*turbopackIgnore: true*/ MUNICIPIOS_CSV, 'utf-8').split('\n').slice(1)
     for (const line of lines) {
       const [cod, nome, uf] = line.split(';')
       if (cod && nome) municipioCache.set(cod.trim(), { nome: nome.trim(), uf: (uf ?? '').trim() })
@@ -364,7 +364,7 @@ export async function renderDanfseHtml(
   }
 
   const templatePath = options.templatePath ?? TEMPLATE_PATH
-  let html = readFileSync(templatePath, 'utf-8')
+  let html = readFileSync(/*turbopackIgnore: true*/ templatePath, 'utf-8')
 
   // Ambiente da nota: produção (tpAmb=1) vs homologação/produção restrita (tpAmb=2).
   // Determina, junto com isPreview, se exibimos os dizeres de "não-validade fiscal":
